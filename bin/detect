@@ -1,0 +1,11 @@
+#!/bin/bash
+
+BUILD_DIR=$1
+
+if [ -f ${BUILD_DIR}/requirements.txt && $(grep -i 'pyscenedetect' ${BUILD_DIR}/requirements.txt) ] ; then
+  echo "cv2.so hack"
+  exit 0
+fi
+
+exit 1
+

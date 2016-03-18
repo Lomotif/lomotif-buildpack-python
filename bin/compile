@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Fail fast and fail hard.
+set -eo pipefail
+
+[ "$BUILDPACK_XTRACE" ] && set -o xtrace
+
+# Ref: https://github.com/heroku/heroku-buildpack-python/blob/master/bin/utils
+# Syntax sugar.
+indent() {
+  sed "s/^/       /"
+}
+
+# Buildpack Steps.
+puts-step() {
+  echo "-----> $@"
+}
+
+# Buildpack Warnings.
+puts-warn() {
+  echo " !     $@"
+}
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=$3
+
+# Bring cv2 over from system site-packages to our /app/.heroku environment
+
+puts-step "Looking for cv2.so"
+if [ -f /usr/lib/python2.7/dist-packages/cv2.so ]; then
+  echo "Found. Porting" | indent
+  cp /usr/lib/python2.7/dist-packages/cv2.so ${BUILD_DIR}/.heroku/python/lib/python2.7/site-packages/cv2.so
+else
+  echo "Not found. Are you on the right image?" | indent
+fi
+
+
