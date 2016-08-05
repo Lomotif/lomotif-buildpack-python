@@ -28,11 +28,13 @@ ENV_DIR=$3
 # Bring cv2 over from system site-packages to our /app/.heroku environment
 
 puts-step "Looking for cv2.so"
-if [ -f /usr/lib/python2.7/dist-packages/cv2.so ]; then
+if [ -f /usr/lib/python2.7/dist-packages/cv2*.so ]; then
   echo "Found. Porting" | indent
-  cp /usr/lib/python2.7/dist-packages/cv2.so ${BUILD_DIR}/.heroku/python/lib/python2.7/site-packages/cv2.so
+  cp /usr/lib/python2.7/dist-packages/cv2*.so ${BUILD_DIR}/.heroku/python/lib/python2.7/site-packages/
 else
-  echo "Not found. Are you on the right image?" | indent
+  echo "Installing python-opencv" | indent
+  apt-get install -y python-opencv && \
+  cp /usr/lib/python2.7/dist-packages/cv2*.so ${BUILD_DIR}/.heroku/python/lib/python2.7/site-packages/ && \
+  echo "Copied cv2.so to app environment" | indent
 fi
-
 
