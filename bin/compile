@@ -33,7 +33,7 @@ if [ -f /usr/lib/python2.7/dist-packages/cv2*.so ]; then
   cp /usr/lib/python2.7/dist-packages/cv2*.so ${BUILD_DIR}/.heroku/python/lib/python2.7/site-packages/
 else
   echo "Installing python-opencv" | indent
-  apt-get install -y python-opencv && \
+  sudo su -c apt-get install -y python-opencv && \
   cp /usr/lib/python2.7/dist-packages/cv2*.so ${BUILD_DIR}/.heroku/python/lib/python2.7/site-packages/ && \
   echo "Copied cv2.so to app environment" | indent
 fi
